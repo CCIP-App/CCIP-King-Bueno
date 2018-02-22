@@ -1,0 +1,48 @@
+{
+  "name": "ccip-king-bueno-server",
+  "version": "1.0.0",
+  "description": "CCIP Q&A game for SITCON",
+  "scripts": {
+    "start": "export DEBUG=DEBUG&& export PORT=8088 && node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "keywords": [
+    "CCIP",
+    "game",
+    "Q&A"
+  ],
+  "author": "yoyo930021 (yoyo930021@gmail.com)",
+  "license": "GPL-3.0",
+  "dependencies": {
+    "@koa/cors": "2",
+    "ioredis": "^3.2.2",
+    "koa": "^2.5.0",
+    "koa-bodyparser": "^4.2.0",
+    "koa-json": "^2.0.2",
+    "koa-logger": "^3.1.0",
+    "koa-ratelimit": "^4.0.0",
+    "koa-router": "^7.4.0",
+    "lodash": "^4.17.5",
+    "mysql2": "^1.5.2",
+    "pg": "^7.4.1",
+    "pg-hstore": "^2.3.2",
+    "request": "^2.83.0",
+    "request-promise": "^4.2.2",
+    "sequelize": "^4.33.4",
+    "socket.io": "^2.0.4",
+    "sqlite3": "^3.1.13",
+    "uuid": "^3.2.1",
+    "uws": "^9.14.0"
+  },
+  "devDependencies": {
+    "eslint": "^4.18.0",
+    "eslint-config-standard": "^11.0.0-beta.0",
+    "eslint-plugin-import": "^2.8.0",
+    "eslint-plugin-node": "^6.0.0",
+    "eslint-plugin-promise": "^3.6.0",
+    "eslint-plugin-standard": "^3.0.1"
+  }
+}
