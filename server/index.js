@@ -8,7 +8,7 @@ const port = process.env.PORT || 8088
 // init
 const app = new Koa()
 const server = require('http').createServer(app.callback())
-const io = require('socket.io')(server)
+const io = require('socket.io', { rememberTransport: false, transports: ['websocket'] })(server)
 const client = require('./socket/client.js')
 client(io)
 

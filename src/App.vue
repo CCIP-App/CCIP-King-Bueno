@@ -31,7 +31,7 @@ export default {
   },
   methods: {
     startConnect () {
-      this.socket = io(config.socket)
+      this.socket = io(config.socket, { rememberTransport: false, transports: ['websocket'] })
       this.initSocket()
     },
     login () {
