@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "CCIP Q&A game for SITCON",
   "scripts": {
-    "start": "export DEBUG=DEBUG&& export PORT=8088 && node index.js"
+    "debug": "DEBUG=socket.io* node index.js"
   },
   "repository": {
     "type": "git",
