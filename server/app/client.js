@@ -8,7 +8,7 @@ const authTokenAndRegist = async (token) => {
   // const option = {
   //   uri: config.authserver.url,
   //   qs: {
-  //     token: token // -> uri + '?access_token=xxxxx%20xxxxx'
+  //     token: token
   //   },
   //   resolveWithFullResponse: true
   // }
@@ -34,12 +34,13 @@ const makeRoomData = async (levelName) => {
   const problems = await level.getProblems({ order: Model.client.random(), limit: level.roundProblems })
   // const problem = await Model.Problem.findAll({ order: Model.client.random(), limit: 6 })
   let result = {
-    last: Date.now(),
+    last: 0,
     times: level.times,
     maxScore: level.maxScore,
     playerScores: [],
     computerScore: 0,
-    problems: []
+    problems: [],
+    nowProblem: 0
   }
   for (let element of problems) {
     let temp = {
