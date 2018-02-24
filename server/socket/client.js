@@ -99,7 +99,7 @@ const start = function (io) {
           }
           result.win = this.playerScore > this.computerScore
           let user = await Model.User.findOne({ where: {token: input.token} })
-          const round = await Model.Round.create({ roomName: input.roomName, sponsor: roomData.problems[0].sponsor, score: result.playerScore, summary: true })
+          const round = await Model.Round.create({ roomName: input.roomName, sponsor: roomData.problems[0].sponsor, score: result.playerScore, summary: true, anwearSecond: 0 })
           await user.addRound(round)
           await user.increment('score', {by: result.playerScore})
           client.to(input.roomName).emit('finish', result)
@@ -118,7 +118,7 @@ const start = function (io) {
           const problem = roomData.problems[roomData.playerScores.length]
           const option = problem.options[input.num]
           const playerScore = app.calcScore(roomData, option.currect, now)
-          let round = await Model.Round.create({ roomName: input.roomName, sponsor: problem.sponsor, score: playerScore })
+          let round = await Model.Round.create({ roomName: input.roomName, sponsor: problem.sponsor, score: playerScore, anwearSecond: app.calcTimes(roomData, now) })
           await round.setProblem(await Model.Problem.findOne({ where: {question: problem.question} }))
           await round.setOption(await Model.Option.findById(option.id))
 

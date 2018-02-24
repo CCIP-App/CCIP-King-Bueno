@@ -71,6 +71,11 @@ let calcScore = (roomData, currect, times) => {
   return score
 }
 
+let calcTimes = (roomData, times) => {
+  let result = Math.ceil((roomData.times - (times - roomData.last) / 1000))
+  return result
+}
+
 const delay = (interval) => {
   return new Promise((resolve) => {
     setTimeout(resolve, interval)
@@ -82,5 +87,6 @@ module.exports = {
   authLogin: authLogin,
   makeRoomData: makeRoomData,
   calcScore: calcScore,
-  delay: delay
+  delay: delay,
+  calcTimes: calcTimes
 }

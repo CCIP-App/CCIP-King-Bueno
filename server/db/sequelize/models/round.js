@@ -17,6 +17,10 @@ module.exports = function (sequelize, DataTypes) {
       type: DataTypes.BOOLEAN,
       defaultValue: false
     },
+    anwearSecond: {
+      type: DataTypes.INTEGER,
+      allowNull: false
+    },
     score: {
       type: DataTypes.INTEGER,
       allowNull: false
