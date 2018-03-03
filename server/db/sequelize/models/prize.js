@@ -16,10 +16,13 @@ module.exports = function (sequelize, DataTypes) {
     needScore: {
       type: DataTypes.INTEGER,
       allowNull: false
+    },
+    convertTime: {
+      type: DataTypes.INTEGER,
+      defaultValue: 0
     }
   }, {
     associate: function (models) {
-      Prize.belongsToMany(models.User, {through: 'UserPrize'})
     }
   })
 

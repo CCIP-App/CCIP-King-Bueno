@@ -20,7 +20,7 @@ module.exports = function (sequelize, DataTypes) {
   }, {
     associate: function (models) {
       User.hasMany(models.Round)
-      User.belongsToMany(models.Prize, {through: 'UserPrize'})
+      User.hasMany(models.UserPrize)
     }
   })
 
