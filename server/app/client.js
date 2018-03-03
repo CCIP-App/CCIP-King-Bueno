@@ -52,16 +52,33 @@ const makeRoomData = async (levelName) => {
     temp.options = temp.options.map(element => {
       return element.dataValues
     })
-    temp.computer = makeComputer(temp)
+    temp.computer = await makeComputer(temp)
     result.problems.push(temp)
   }
   return result
 }
 
-let makeComputer = (problem) => {
-  let result = { times: 3, option: 0 }
-  let currect = problem.options[result.option].currect
-  return { times: 3, option: 0, content: problem.options[result.option].content, currect: currect, score: 0 }
+let makeComputer = async (problem) => {
+  const round = await Model.Round.findAll({ include: [{ model: Model.Problem, where: { question: problem.question } }], order: Model.client.random(), limit: 1 })
+  let result = {}
+  if (round.length > 0) {
+    let option = await round[0].getOption()
+    console.log(option)
+    console.log(option != null)
+    if (option != null && option !== undefined) {
+      let optionNum = _.findIndex(problem.options, (value) => { return value.id === option.id })
+      if (optionNum !== -1) result = { times: 5000 - round[0].anwearSecond, option: optionNum, currect: option.currect, score: 0 }
+      else result = { times: 3000, option: 0, currect: problem.options[0].currect, score: 0 }
+    } else {
+      result = { times: 3000, option: 0, currect: problem.options[0].currect, score: 0 }
+    }
+  } else {
+    result = { times: 3000, option: 0, currect: problem.options[0].currect, score: 0 }
+  }
+  return result
+  // let result = { times: 3000, option: 0 }
+  // let currect = problem.options[result.option].currect
+  // return { times: 3000, option: 0, content: problem.options[result.option].content, currect: currect, score: 0 }
 }
 
 let calcScore = (roomData, currect, times) => {
@@ -73,7 +90,7 @@ let calcScore = (roomData, currect, times) => {
 }
 
 let calcTimes = (roomData, times) => {
-  let result = Math.ceil((roomData.times - (times - roomData.last) / 1000))
+  let result = Math.ceil((roomData.times * 1000 - (times - roomData.last)))
   return result
 }
 
@@ -83,11 +100,26 @@ const delay = (interval) => {
   })
 }
 
+let getScore = async (socket, token) => {
+  let user = await Model.User.findOne({ where: {token: token} })
+  let userPrizes = await user.getUserPrizes()
+  let prizes = []
+  let cost = 0
+  for (let prize of userPrizes) {
+    let temp = await prize.getPrize()
+    prizes.push(temp)
+    cost += temp.needScore
+  }
+  let result = { score: user.score, cost: cost }
+  socket.emit('score', result)
+}
+
 module.exports = {
   authTokenAndRegist: authTokenAndRegist,
   authLogin: authLogin,
   makeRoomData: makeRoomData,
   calcScore: calcScore,
   delay: delay,
-  calcTimes: calcTimes
+  calcTimes: calcTimes,
+  getScore: getScore
 }
