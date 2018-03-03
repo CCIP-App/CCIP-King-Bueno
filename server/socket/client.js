@@ -30,8 +30,7 @@ const start = function (io) {
     })
 
     socket.on('score', async (token) => {
-      let user = await Model.User.findOne({ where: {token: token} })
-      socket.emit('score', user.score)
+      await app.getScore(socket, token)
     })
 
     socket.on('rank', async (token) => {
@@ -39,6 +38,14 @@ const start = function (io) {
       if (auth) {
         const ranks = await Model.User.findAll({ attributes: ['nick', 'score'], order: [['score', 'DESC'], ['updatedAt', 'ASC']], limit: 10 })
         socket.emit('rank', ranks)
+      }
+    })
+
+    socket.on('prize', async (token) => {
+      let auth = await app.authLogin(token)
+      if (auth) {
+        const prizes = await Model.Prize.findAll()
+        socket.emit('prize', prizes)
       }
     })
 
@@ -50,6 +57,7 @@ const start = function (io) {
     socket.on('start', async (input) => {
       let auth = await app.authLogin(input.token)
       if (auth) {
+        await redis.incr('rooms')
         let oldRoomName = await redis.get(input.token)
         if (oldRoomName !== null) await redis.del(oldRoomName)
         const roomName = uuid()
@@ -70,6 +78,15 @@ const start = function (io) {
         roomData = JSON.parse(roomData)
         let getTime = Math.ceil((Date.now() - roomData.last) / 1000)
         if (roomData.last === 0 || (getTime <= (roomData.times + 2) && getTime >= (roomData.times - 1))) {
+          if (roomData.last !== 0 && roomData.nowProblem === roomData.playerScores.length && getTime > roomData.times) {
+            const problem = roomData.problems[roomData.playerScores.length]
+            roomData.playerScores.push(0)
+            roomData.computerScore += problem.computer.score
+            let round = await Model.Round.create({ roomName: input.roomName, sponsor: problem.sponsor, score: 0, anwearSecond: 0 })
+            await round.setProblem(await Model.Problem.findOne({ where: {question: problem.question} }))
+            let user = await Model.User.findOne({ where: {token: input.token} })
+            await user.addRound(round)
+          }
           if (roomData.playerScores.length !== roomData.problems.length) {
             let problem = roomData.problems[roomData.playerScores.length]
             let result = {
@@ -84,30 +101,32 @@ const start = function (io) {
             let problemId = roomData.playerScores.length
             roomData.nowProblem = problemId
             await redis.set(input.roomName, JSON.stringify(roomData))
-            await app.delay(problem.computer.times * 1000 - 500)
+            await app.delay(problem.computer.times - 200)
             roomData = await redis.get(input.roomName)
             roomData = JSON.parse(roomData)
             if (roomData.last === last) {
               let result = roomData.problems[problemId]
               let tempTime = Date.now()
               result.computer.score = app.calcScore(roomData, result.computer.currect, tempTime)
-              result.computer.millls = tempTime
-              client.to(input.roomName).emit('computer', result.computer)
+              roomData.computerScore += result.computer.score
               await redis.set(input.roomName, JSON.stringify(roomData))
+              client.to(input.roomName).emit('computer', result.computer)
             }
           } else {
             let result = {
               playerScore: roomData.playerScores.reduce((prev, element) => { return prev + element }, 0),
               computerScore: roomData.computerScore
             }
-            result.win = this.playerScore > this.computerScore
+            result.win = result.playerScore > result.computerScore
             let user = await Model.User.findOne({ where: {token: input.token} })
             const round = await Model.Round.create({ roomName: input.roomName, sponsor: roomData.problems[0].sponsor, score: result.playerScore, summary: true, anwearSecond: 0 })
             await user.addRound(round)
             await user.increment('score', {by: result.playerScore})
             client.to(input.roomName).emit('finish', result)
+            await redis.decr('rooms')
             socket.leave(input.roomName)
-            socket.emit('score', user.score)
+
+            await app.getScore(socket, input.token)
           }
         }
       }
@@ -131,9 +150,8 @@ const start = function (io) {
             let user = await Model.User.findOne({ where: {token: input.token} })
             await user.addRound(round)
             roomData.playerScores.push(playerScore)
-            roomData.computerScore += problem.computer.score
             await redis.set(input.roomName, JSON.stringify(roomData))
-            client.to(input.roomName).emit('answear', { currect: option.currect, score: playerScore, millls: now })
+            client.to(input.roomName).emit('answear', { currect: option.currect, score: playerScore })
           }
         }
       }
