@@ -5,23 +5,28 @@ const request = require('request-promise')
 const _ = require('lodash')
 
 const authTokenAndRegist = async (token) => {
-  // const option = {
-  //   uri: config.authserver.url,
-  //   qs: {
-  //     token: token
-  //   },
-  //   resolveWithFullResponse: true
-  // }
-  // const response = await request(option)
-  // if (response.statusCode === 400) {
-  //   return false
-  // } else {
-  //   await Model.User.create({ nick: response.data['user_id'], token: token, score: 0 })
-  //   return true
-  // }
-
-  await Model.User.create({ nick: 'yoyo', token: token, score: 0 })
-  return true
+  const option = {
+    uri: config.authserver.url,
+    qs: {
+      token: token
+    },
+    resolveWithFullResponse: true
+  }
+  try {
+    const response = await request(option)
+    if (response.statusCode === 400) {
+      return false
+    } else {
+      const data = JSON.parse(response.body)
+      await Model.User.create({ nick: data['user_id'], token: token, score: 0 })
+      return true
+    }
+  } catch (error) {
+    console.log(error)
+    return false
+  }
+  // await Model.User.create({ nick: 'yoyo', token: token, score: 0 })
+  // return true
 }
 
 const authLogin = async (token) => {
@@ -102,14 +107,16 @@ const delay = (interval) => {
 
 let getScore = async (socket, token) => {
   let user = await Model.User.findOne({ where: {token: token} })
-  let userPrizes = await user.getUserPrizes()
-  let prizes = []
   let cost = 0
-  for (let prize of userPrizes) {
-    let temp = await prize.getPrize()
-    prizes.push(temp)
-    cost += temp.needScore
-  }
+  try {
+    let userPrizes = await user.getUserPrizes()
+    let prizes = []
+    for (let prize of userPrizes) {
+      let temp = await prize.getPrize()
+      prizes.push(temp)
+      cost += temp.needScore
+    }
+  } catch (error) {}
   let result = { score: user.score, cost: cost }
   socket.emit('score', result)
 }

@@ -29,6 +29,11 @@ const start = function (io) {
       }
     })
 
+    socket.on('nick', async (token) => {
+      let user = await Model.User.findOne({ where: {token: token} })
+      socket.emit('nick', user.nick)
+    })
+
     socket.on('score', async (token) => {
       await app.getScore(socket, token)
     })
@@ -36,16 +41,25 @@ const start = function (io) {
     socket.on('rank', async (token) => {
       let auth = await app.authLogin(token)
       if (auth) {
-        const ranks = await Model.User.findAll({ attributes: ['nick', 'score'], order: [['score', 'DESC'], ['updatedAt', 'ASC']], limit: 10 })
-        socket.emit('rank', ranks)
+        let player = await Model.User.findOne({ where: {token: token} })
+        let result = {
+          user: await Model.User.count({ where: { score: { [Model.client.Op.gt]: player.score } } }) + 1,
+          sum: await Model.User.count(),
+          ranks: await Model.User.findAll({ attributes: ['nick', 'score'], order: [['score', 'DESC'], ['updatedAt', 'ASC']], limit: 10 })
+        }
+        socket.emit('rank', result)
       }
     })
 
     socket.on('prize', async (token) => {
       let auth = await app.authLogin(token)
       if (auth) {
-        const prizes = await Model.Prize.findAll()
-        socket.emit('prize', prizes)
+        let player = await Model.User.findOne({ where: {token: token} })
+        let result = {
+          prizes: await Model.Prize.findAll(),
+          user: await player.getUserPrizes()
+        }
+        socket.emit('prize', result)
       }
     })
 

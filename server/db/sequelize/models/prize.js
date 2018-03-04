@@ -17,6 +17,10 @@ module.exports = function (sequelize, DataTypes) {
       type: DataTypes.INTEGER,
       allowNull: false
     },
+    playerOnly: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false
+    },
     convertTime: {
       type: DataTypes.INTEGER,
       defaultValue: 0
