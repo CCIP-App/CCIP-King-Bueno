@@ -126,7 +126,7 @@ export default {
   methods: {
     startConnect () {
       var self = this
-      fetch('http://localhost:8088/').then(() => {
+      fetch('https://king-api.sitcon.party/').then(() => {
         self.socket = io(config.socket, { rememberTransport: false, transports: ['websocket'] })
         if (self.player.token !== '' && self.socket) {
           self.alwaysEvent()
