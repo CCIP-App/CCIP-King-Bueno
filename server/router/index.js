@@ -29,19 +29,32 @@ router.get('/getPrizes', async ctx => {
 })
 
 router.post('/convert', async ctx => {
-  const prize = await Model.Prize.findById(ctx.request.body.prizeId)
+  const convertPrize = await Model.Prize.findById(ctx.request.body.prizeId)
   const user = await Model.User.findOne({ where: {token: ctx.request.body.token} })
   let userPrizes = await user.getUserPrizes()
   let cost = 0
+  let vali = true
+
   for (let prize of userPrizes) {
     let temp = await prize.getPrize()
+    // console.log(temp)
     cost += temp.needScore
+    if (convertPrize.playerOnly) {
+      if (temp.id === convertPrize.id) vali = false
+    }
   }
-  if ((user.score - cost) > prize.needScore) {
+
+  if (!((user.score - cost) > convertPrize.needScore)) {
+    vali = false
+  }
+
+  console.log(vali)
+
+  if (vali) {
     let userPrize = await Model.UserPrize.create({})
-    await userPrize.setPrize(prize)
+    await userPrize.setPrize(convertPrize)
     await user.addUserPrize(userPrize)
-    await prize.increment('convertTime', { by: 1 })
+    await convertPrize.increment('convertTime', { by: 1 })
     ctx.response.body = { status: 'success' }
   } else {
     ctx.response.body = { status: 'error' }
