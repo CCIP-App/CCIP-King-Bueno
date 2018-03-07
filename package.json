@@ -10,13 +10,18 @@
     "build": "node build/build.js"
   },
   "dependencies": {
+    "@tweenjs/tween.js": "^17.2.0",
+    "@xkeshi/vue-qrcode": "^0.3.0",
+    "axios": "^0.18.0",
     "babel-plugin-transform-imports": "^1.4.1",
     "socket.io-client": "^2.0.4",
     "stylus": "^0.54.5",
     "stylus-loader": "^3.0.2",
     "transform-imports": "^1.2.1",
     "vue": "^2.5.2",
-    "vuetify": "^1.0.4"
+    "vue-router": "^3.0.1",
+    "vuetify": "^1.0.4",
+    "vuex": "^3.0.1"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",
