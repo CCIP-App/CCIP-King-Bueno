@@ -36,14 +36,9 @@ export default {
         window.localStorage.setItem('ccip-token', this.parameters().token)
       }
       api.checkServer().then((res) => {
-        if (res.status === 200) {
-          this.$store.commit('setOffline', false)
-          window.socketio = io(config.socket, { rememberTransport: false, transports: ['websocket'] })
-          this.alwaysEvent()
-        } else {
-          this.$store.commit('setOffline', true)
-          this.$router.replace('/offline')
-        }
+        this.$store.commit('setOffline', false)
+        window.socketio = io(config.socket, { rememberTransport: false, transports: ['websocket'] })
+        this.alwaysEvent()
       }).catch(() => {
         this.$store.commit('setOffline', true)
         this.$router.replace('/offline')
