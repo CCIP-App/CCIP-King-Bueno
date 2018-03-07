@@ -45,7 +45,7 @@ const start = function (io) {
         let result = {
           user: await Model.User.count({ where: { score: { [Model.client.Op.gt]: player.score } } }) + 1,
           sum: await Model.User.count(),
-          ranks: await Model.User.findAll({ attributes: ['nick', 'score'], order: [['score', 'DESC'], ['updatedAt', 'ASC']], limit: 10 })
+          ranks: await Model.User.findAll({ where: { type: { [Model.client.Op.ne]: 'staff' } }, attributes: ['nick', 'score'], order: [['score', 'DESC'], ['updatedAt', 'ASC']], limit: 10 })
         }
         socket.emit('rank', result)
       }
@@ -58,6 +58,11 @@ const start = function (io) {
         let result = {
           prizes: await Model.Prize.findAll(),
           user: await player.getUserPrizes()
+        }
+        if (player.type === 'staff') {
+          result.prizes = result.prizes.filter((value) => {
+            return (value.name.includes('徽章'))
+          })
         }
         socket.emit('prize', result)
       }
@@ -132,6 +137,7 @@ const start = function (io) {
               computerScore: roomData.computerScore
             }
             result.win = result.playerScore > result.computerScore
+            if (result.win) result.playerScore += roomData.maxScore
             let user = await Model.User.findOne({ where: {token: input.token} })
             const round = await Model.Round.create({ roomName: input.roomName, sponsor: roomData.problems[0].sponsor, score: result.playerScore, summary: true, anwearSecond: 0 })
             await user.addRound(round)

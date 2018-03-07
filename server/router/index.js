@@ -35,6 +35,10 @@ router.post('/convert', async ctx => {
   let cost = 0
   let vali = true
 
+  if (user.type === 'staff') {
+    if (!convertPrize.name.includes('徽章')) vali = false
+  }
+
   for (let prize of userPrizes) {
     let temp = await prize.getPrize()
     // console.log(temp)
