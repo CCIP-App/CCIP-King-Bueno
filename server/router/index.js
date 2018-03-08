@@ -20,6 +20,23 @@ router.get('/', async ctx => {
   }
 })
 
+router.get('/getProblem', async ctx => {
+  const problems = await Model.Problem.findAll()
+  let result = []
+  for (let element of problems) {
+    let temp = {
+      question: element.question,
+      sponsor: element.sponsor,
+      options: await element.getOptions()
+    }
+    temp.options = temp.options.map(element => {
+      return element.dataValues.content
+    })
+    result.push(temp)
+  }
+  ctx.response.body = result
+})
+
 router.get('/getUser', async ctx => {
   const token = ctx.request.query.token
   let user = await Model.User.findOne({ where: {token: token} })

@@ -10,5 +10,8 @@ var client = axios.create(config)
 export default {
   checkServer: (token) => {
     return client.get('/?token=' + token)
+  },
+  getAllProblem: () => {
+    return client.get('/getProblem')
   }
 }

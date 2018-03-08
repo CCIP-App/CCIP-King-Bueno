@@ -11,6 +11,7 @@ import Loading from '../views/Loading.vue'
 import Problem from '../views/Problem.vue'
 import Finish from '../views/Finish.vue'
 import Convert from '../views/Convert.vue'
+import Develop from '../views/Develop.vue'
 
 Vue.use(Router)
 
@@ -46,6 +47,7 @@ export default new Router({
     { path: '/loading/:level', component: Loading, beforeEnter: requireSocketio, props: true },
     { path: '/problem', component: Problem, beforeEnter: requireSocketio },
     { path: '/finish', component: Finish, beforeEnter: requireSocketio },
-    { path: '/convert/:name', component: Convert, beforeEnter: requireSocketio, props: true }
+    { path: '/convert/:name', component: Convert, beforeEnter: requireSocketio, props: true },
+    { path: '/develop', component: Develop }
   ]
 })
