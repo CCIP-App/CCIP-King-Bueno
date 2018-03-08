@@ -32,6 +32,9 @@ const authTokenAndRegist = async (token) => {
 
 const authLogin = async (token) => {
   let user = await Model.User.findOne({ where: {token: token} })
+  if (user.type !== 'staff') {
+    return false
+  }
   return (user !== null)
 }
 
