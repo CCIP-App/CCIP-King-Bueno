@@ -120,7 +120,7 @@ const start = function (io) {
             let problemId = roomData.playerScores.length
             roomData.nowProblem = problemId
             await redis.set(input.roomName, JSON.stringify(roomData))
-            await app.delay(problem.computer.times - 200)
+            await app.delay(roomData.times * 1000 - problem.computer.times - 200)
             roomData = await redis.get(input.roomName)
             roomData = JSON.parse(roomData)
             if (roomData.last === last) {

@@ -73,7 +73,7 @@ let makeComputer = async (problem) => {
     console.log(option != null)
     if (option != null && option !== undefined) {
       let optionNum = _.findIndex(problem.options, (value) => { return value.id === option.id })
-      if (optionNum !== -1) result = { times: 5000 - round[0].anwearSecond, option: optionNum, currect: option.currect, score: 0 }
+      if (optionNum !== -1) result = { times: round[0].anwearSecond, option: optionNum, currect: option.currect, score: 0 }
       else result = { times: 3000, option: 0, currect: problem.options[0].currect, score: 0 }
     } else {
       result = { times: 3000, option: 0, currect: problem.options[0].currect, score: 0 }
@@ -98,6 +98,7 @@ let calcScore = (roomData, currect, times) => {
 
 let calcTimes = (roomData, times) => {
   let result = Math.ceil((roomData.times * 1000 - (times - roomData.last)))
+  if (result <= 0) result = 500
   return result
 }
 
