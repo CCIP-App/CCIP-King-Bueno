@@ -16,7 +16,7 @@ Object.keys(Components).forEach(key => {
   Vue.component(key, Components[key])
 })
 
-// Vue.config.productionTip = false
+Vue.config.productionTip = false
 
 /* eslint-disable no-new */
 new Vue({

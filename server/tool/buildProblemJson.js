@@ -2,7 +2,6 @@ var request = require('request')
 const csv = require('csvtojson')
 const config = require('../config/index.js')
 const Model = require('../db/sequelize/index.js')
-const _ = require('lodash')
 
 var rows = 0
 var levels = []
