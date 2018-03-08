@@ -11,6 +11,9 @@ export default {
   checkServer: (token) => {
     return client.get('/?token=' + token)
   },
+  getSponsor: (name) => {
+    return client.get('/sponsor/' + name)
+  },
   getAllProblem: () => {
     return client.get('/getProblem')
   }

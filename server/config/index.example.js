@@ -17,5 +17,8 @@ module.exports = {
   authserver: {
     url: 'https://ccip.coscup.org/status'
   },
-  problem: '//'
+  problem: '//',
+  sponsor: {
+    'token': 'SponsorName'
+  }
 }

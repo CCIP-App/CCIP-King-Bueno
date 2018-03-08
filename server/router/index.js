@@ -2,6 +2,7 @@ const Router = require('koa-router')
 const Model = require('../db/sequelize/index.js')
 const redis = require('../db/redis.js')
 const app = require('../app/client.js')
+const config = require('../config/index.js')
 
 const router = new Router()
 
@@ -68,6 +69,8 @@ router.post('/convert', async ctx => {
     if (!convertPrize.name.includes('徽章')) vali = false
   }
 
+  if (convertPrize.needScore === 0) vali = false
+
   for (let prize of userPrizes) {
     let temp = await prize.getPrize()
     // console.log(temp)
@@ -95,7 +98,7 @@ router.post('/convert', async ctx => {
 })
 
 router.get('/sponsor/:name', async ctx => {
-  const problems = await Model.Problem.findAll({ where: {sponsor: ctx.params.name} })
+  const problems = await Model.Problem.findAll({ where: {sponsor: config.sponsor['ctx.params.name']} })
   let result = []
   for (let problem of problems) {
     let temp = {
