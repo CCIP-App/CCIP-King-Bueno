@@ -67,9 +67,9 @@ export default {
       window.socketio.on('connect', () => {
         console.log('connect')
       })
-      this.socket.on('disconnect', () => {
+      window.socketio.on('disconnect', () => {
         console.log('disconnect')
-        this.makeToast('已離線，請重新整理。')
+        self.makeToast('已離線，請重新整理。')
       })
       window.socketio.on('score', (score) => {
         console.log('score', score)
