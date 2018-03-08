@@ -50,34 +50,26 @@ csv(
     // csvRow is an array
     if (rows === 0) {
       for (let i = 0; i < 3; i++) {
-        let level = { name: csvRow[i * 8 + 3], times: autoConvert(csvRow[i * 8 + 5]), roundProblems: 5, maxScore: 0 }
+        let level = { name: csvRow[i * 8 + 3].trim(), times: autoConvert(csvRow[i * 8 + 5].trim()), roundProblems: 5, maxScore: 0 }
         levels.push(level)
       }
     } else if (rows === 1) {
       for (let i = 0; i < 3; i++) {
-        levels[i].roundProblems = autoConvert(csvRow[i * 8 + 1])
-        levels[i].maxScore = autoConvert(csvRow[i * 8 + 3])
-        // let save = await Model.Level.create(levels[i])
-        // databaseLevel.push(save)
+        levels[i].roundProblems = autoConvert(csvRow[i * 8 + 1].trim())
+        levels[i].maxScore = autoConvert(csvRow[i * 8 + 3].trim())
       }
     } else if (rows >= 4) {
       for (let i = 0; i < 3; i++) {
-        if (csvRow[i * 8 + 2] === '') continue
-        let problem = { question: csvRow[i * 8 + 2],
-          sponsor: csvRow[i * 8 + 1],
+        if (csvRow[i * 8 + 2].trim() === '') continue
+        let problem = { question: csvRow[i * 8 + 2].trim(),
+          sponsor: csvRow[i * 8 + 1].trim(),
           options: [
-            { content: csvRow[i * 8 + 3], currect: (csvRow[i * 8 + 7] === 'A') },
-            { content: csvRow[i * 8 + 4], currect: (csvRow[i * 8 + 7] === 'B') },
-            { content: csvRow[i * 8 + 5], currect: (csvRow[i * 8 + 7] === 'C') },
-            { content: csvRow[i * 8 + 6], currect: (csvRow[i * 8 + 7] === 'D') }
+            { content: csvRow[i * 8 + 3].trim(), currect: (csvRow[i * 8 + 7].trim() === 'A') },
+            { content: csvRow[i * 8 + 4].trim(), currect: (csvRow[i * 8 + 7].trim() === 'B') },
+            { content: csvRow[i * 8 + 5].trim(), currect: (csvRow[i * 8 + 7].trim() === 'C') },
+            { content: csvRow[i * 8 + 6].trim(), currect: (csvRow[i * 8 + 7].trim() === 'D') }
           ]}
         problems[i].push(problem)
-        // let problem = await Model.Problem.create({ question: csvRow[i * 8 + 2], sponsor: csvRow[i * 8 + 1] })
-        // await problem.addOption(await Model.Option.create({ content: csvRow[i * 8 + 3], currect: (csvRow[i * 8 + 7] === 'A') }))
-        // await problem.addOption(await Model.Option.create({ content: csvRow[i * 8 + 4], currect: (csvRow[i * 8 + 7] === 'B') }))
-        // await problem.addOption(await Model.Option.create({ content: csvRow[i * 8 + 5], currect: (csvRow[i * 8 + 7] === 'C') }))
-        // await problem.addOption(await Model.Option.create({ content: csvRow[i * 8 + 6], currect: (csvRow[i * 8 + 7] === 'D') }))
-        // await databaseLevel[i].addProblem(problem)
       }
     }
     rows++
