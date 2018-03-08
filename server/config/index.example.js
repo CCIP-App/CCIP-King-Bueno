@@ -16,5 +16,6 @@ module.exports = {
   },
   authserver: {
     url: 'https://ccip.coscup.org/status'
-  }
+  },
+  problem: '//'
 }
