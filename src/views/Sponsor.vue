@@ -105,6 +105,10 @@ export default {
 }
 </script>
 
-<style>
-
+<style scoped>
+h2 {
+  font-size: 24px;
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
 </style>
