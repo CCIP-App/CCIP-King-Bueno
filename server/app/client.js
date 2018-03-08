@@ -92,6 +92,7 @@ let calcScore = (roomData, currect, times) => {
   if (currect) {
     score = Math.ceil((roomData.times - (times - roomData.last) / 1000) / roomData.times * roomData.maxScore)
   }
+  if (score <= 0) score = 10
   return score
 }
 
