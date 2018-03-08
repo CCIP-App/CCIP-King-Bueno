@@ -1,11 +1,23 @@
 const Router = require('koa-router')
 const Model = require('../db/sequelize/index.js')
 const redis = require('../db/redis.js')
+const app = require('../app/client.js')
 
 const router = new Router()
 
 router.get('/', async ctx => {
-  ctx.body = 'Hello World'
+  const token = ctx.request.query.token
+  let auth = await app.authLogin(token)
+  if (auth) {
+    ctx.response.body = 'Hello World'
+  } else {
+    const auth = await app.authTokenAndRegist(token)
+    if (auth) {
+      ctx.response.body = 'Hello World'
+    } else {
+      throw new Error('No start')
+    }
+  }
 })
 
 router.get('/getUser', async ctx => {

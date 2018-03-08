@@ -19,6 +19,9 @@ const authTokenAndRegist = async (token) => {
     } else {
       const data = JSON.parse(response.body)
       await Model.User.create({ nick: data['user_id'], token: token, score: 0, type: data['type'] })
+      if (data['type'] !== 'staff') {
+        return false
+      }
       return true
     }
   } catch (error) {

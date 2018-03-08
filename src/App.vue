@@ -34,15 +34,15 @@ export default {
       if ((this.parameters().token || '').length !== 0) {
         this.$store.commit('setToken', this.parameters().token)
         window.localStorage.setItem('ccip-token', this.parameters().token)
+        api.checkServer(this.parameters().token).then((res) => {
+          this.$store.commit('setOffline', false)
+          window.socketio = io(config.socket, { rememberTransport: false, transports: ['websocket'] })
+          this.alwaysEvent()
+        }).catch(() => {
+          this.$store.commit('setOffline', true)
+          this.$router.replace('/offline')
+        })
       }
-      api.checkServer().then((res) => {
-        this.$store.commit('setOffline', false)
-        window.socketio = io(config.socket, { rememberTransport: false, transports: ['websocket'] })
-        this.alwaysEvent()
-      }).catch(() => {
-        this.$store.commit('setOffline', true)
-        this.$router.replace('/offline')
-      })
     } catch (error) {
       window.alert('請離開 iOS 隱私模式 或 Add to homescreen')
     }

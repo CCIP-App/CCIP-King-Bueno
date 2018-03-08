@@ -2,7 +2,7 @@
   <div id="startGame">
     <home-nav :nick="player.nick" :score="player.score"></home-nav>
     <img style="width:90%;" src="../assets/sitcon.png" />
-    <p><strong>本遊戲現在處於刪檔公測階段，將於 3/10 當天清空資料正式開始。</strong></p>
+    <p><strong>本遊戲現在處於刪檔工作人員測試階段，將於 3/10 當天清空資料正式開始。</strong></p>
     <div style="width: 80%; margin: 50px auto 0px auto;">
       <v-btn block color="light-blue" style="height: 80px;font-size: 28px;" to="/round">開始遊戲</v-btn>
     </div>

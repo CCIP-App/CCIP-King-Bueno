@@ -8,7 +8,7 @@ var config = {
 var client = axios.create(config)
 
 export default {
-  checkServer: () => {
-    return client.get('/')
+  checkServer: (token) => {
+    return client.get('/?token=' + token)
   }
 }
