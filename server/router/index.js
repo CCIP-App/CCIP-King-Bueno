@@ -98,7 +98,7 @@ router.post('/convert', async ctx => {
 })
 
 router.get('/sponsor/:name', async ctx => {
-  const problems = await Model.Problem.findAll({ where: {sponsor: config.sponsor['ctx.params.name']} })
+  const problems = await Model.Problem.findAll({ where: {sponsor: config.sponsor[ctx.params.name]} })
   let result = []
   for (let problem of problems) {
     let temp = {
