@@ -14,12 +14,16 @@
         outline block large
         color="blue darken-4"
         @click.stop="answear(index)"
-        :class="{ smallt: option.lenght > 20 }">
+        :class="{ smallt: (option.length > 20) }">
         <v-icon color="red">clear</v-icon>{{ option }}<v-icon color="red">check</v-icon>
       </v-btn>
     </div>
-    <div class="player-time"><div class="bar"></div></div>
-    <div class="com-time"><div class="bar"></div></div>
+    <table style="width: 80%; margin: 0 auto;">
+      <tr>
+        <td><v-btn block color="red" style="height: 80px;font-size: 28px;" @click="nextP(false)">上一個</v-btn></td>
+        <td><v-btn block color="amber" style="height: 80px;font-size: 28px;" @click="nextP(true)">下一個</v-btn></td>
+      </tr>
+    </table>
   </div>
 </template>
 
@@ -51,13 +55,14 @@ export default {
   },
   methods: {
     start () {
-      this.internal = setInterval(() => {
-        if (this.countDown > 0) {
-          this.countDown -= 1
-        } else {
-          this.startRound()
-        }
-      }, 1000)
+      this.startRound()
+      // this.internal = setInterval(() => {
+      //   if (this.countDown > 0) {
+      //     this.countDown -= 1
+      //   } else {
+      //     this.startRound()
+      //   }
+      // }, 1000)
     },
     startRound () {
       // window.socketio.emit('getProblem', {token: this.player.token, roomName: this.round.room})
@@ -75,6 +80,13 @@ export default {
     animate (time) {
       window.requestAnimationFrame(this.animate)
       TWEEN.update(time)
+    },
+    nextP (index) {
+      if (index) this.now += 1
+      else this.now -= 1
+      this.problem = this.allProblem[this.now].question
+      this.options = this.allProblem[this.now].options
+      this.countDown = 5
     }
   },
   beforeMount () {
@@ -168,7 +180,7 @@ export default {
   white-space:initial !important;
   text-transform: none;
 }
-.btn__content.smallt {
+.smallt > .btn__content {
   font-size: 12px
 }
 </style>

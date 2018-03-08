@@ -14,7 +14,7 @@
         outline block large
         color="blue darken-4"
         @click.stop="answear(index)"
-        :class="{ smallt: option.lenght > 20 }">
+        :class="{ smallt: (option.length > 20) }">
         <v-icon color="red" v-if="playerAnsView && playerAnswear === index">{{(!playerCurrect)?'clear':'check'}}</v-icon>{{ option }}<v-icon color="red" v-if="comAnsView && comAnswear === index">{{(!comCurrect)?'clear':'check'}}</v-icon>
       </v-btn>
     </div>
@@ -168,7 +168,7 @@ export default {
   white-space:initial !important;
   text-transform: none;
 }
-.btn__content.smallt {
+.smallt > .btn__content {
   font-size: 12px
 }
 </style>
