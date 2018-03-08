@@ -95,7 +95,7 @@ router.get('/status', async ctx => {
   const rounds = await Model.Round.count()
   const rooms = await redis.get('rooms')
 
-  return { online: online, rounds: rounds, rooms: rooms }
+  ctx.response.body = { online: online, rounds: rounds, rooms: rooms }
 })
 
 module.exports = router

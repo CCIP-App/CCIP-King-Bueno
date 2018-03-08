@@ -1,7 +1,7 @@
 <template>
   <div id="Loading">
     <h2 v-if="finish.win" class="amber--text">You win!</h2>
-    <h2 v-else class="grey--text">You loss!</h2>
+    <h2 v-else class="grey--text">You lose!</h2>
     <p>{{ finish.playerScore + ((finish.win)?' &gt; ':' &lt; ') + finish.computerScore }}</p>
     <div style="width: 80%; margin: 50px auto 0px auto;">
       <v-btn block color="cyan" large to="/start">回主頁</v-btn>

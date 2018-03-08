@@ -13,7 +13,8 @@
         :key="'option-'+index"
         outline block large
         color="blue darken-4"
-        @click.stop="answear(index)">
+        @click.stop="answear(index)"
+        :class="{ smallt: option.lenght > 20 }">
         <v-icon color="red" v-if="playerAnsView && playerAnswear === index">{{(!playerCurrect)?'clear':'check'}}</v-icon>{{ option }}<v-icon color="red" v-if="comAnsView && comAnswear === index">{{(!comCurrect)?'clear':'check'}}</v-icon>
       </v-btn>
     </div>
@@ -165,5 +166,9 @@ export default {
 
 .btn__content {
   white-space:initial !important;
+  text-transform: none;
+}
+.btn__content.smallt {
+  font-size: 12px
 }
 </style>
