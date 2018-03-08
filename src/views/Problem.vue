@@ -153,7 +153,7 @@ export default {
   width: 100%;
   height: 35vh;
   text-align: justify;
-  font-size: 20px
+  font-size: 16px
 }
 .option {
   margin-top: 15px;
