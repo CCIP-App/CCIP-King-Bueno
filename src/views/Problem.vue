@@ -39,7 +39,7 @@ export default {
       playerAnsView: false,
       playerAnswear: 5,
       playerCurrect: false,
-      // internal: null,
+      internal: null,
       score: 0,
       comScore: 0,
       isAnimate: true
@@ -55,14 +55,13 @@ export default {
   },
   methods: {
     start () {
-      // this.internal = setInterval(() => {
-      //   if (this.countDown > 0) {
-      //     this.countDown -= 1
-      //   } else {
-      //     this.startRound()
-      //   }
-      // }, 1000)
-      this.startRound()
+      this.internal = setInterval(() => {
+        if (this.countDown > 0) {
+          this.countDown -= 1
+        } else {
+          this.startRound()
+        }
+      }, 1000)
     },
     startRound () {
       window.socketio.emit('getProblem', {token: this.player.token, roomName: this.round.room})
@@ -88,18 +87,6 @@ export default {
       this.problem = msg.question
       this.options = msg.options
       this.countDown = msg.times
-
-      var self = this
-      var tweeningNumber = { countDown: self.countDown }
-      new TWEEN.Tween(tweeningNumber)
-        .to({ countDown: 0 }, this.countDown * 1000)
-        .onUpdate(function () {
-          self.countDown = tweeningNumber.countDown.toFixed(0)
-        })
-        .onComplete(function () {
-          self.startRound()
-        })
-        .start()
     })
     window.socketio.on('computer', (msg) => {
       this.comCurrect = msg.currect
