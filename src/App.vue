@@ -8,7 +8,7 @@
             :bottom="true"
             v-model="snackbar">
             {{ barText }}
-            <v-btn flat color="pink" @click.native="snackbar = false">Close</v-btn>
+            <v-btn flat color="pink" @click="toReload">重新整理</v-btn>
         </v-snackbar>
       </v-container>
     </v-content>
@@ -26,7 +26,8 @@ export default {
     return {
       snackbar: false,
       timeout: 10000,
-      barText: ''
+      barText: '',
+      reload: false
     }
   },
   beforeMount () {
@@ -51,6 +52,9 @@ export default {
     }
   },
   methods: {
+    toReload () {
+      window.reload()
+    },
     parameters () {
       return location.search.split('?').pop().split('&').map(function (p) {
         var ps = p.split('=')
@@ -82,6 +86,10 @@ export default {
       window.socketio.on('nick', (nick) => {
         console.log('nick')
         self.$store.commit('setNick', nick)
+      })
+      window.socketio.on('error', (error) => {
+        console.error(error)
+        self.makeToast('發生錯誤')
       })
     },
     makeToast (text) {
