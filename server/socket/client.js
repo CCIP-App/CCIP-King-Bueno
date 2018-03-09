@@ -78,7 +78,10 @@ const start = function (io) {
       if (auth) {
         await redis.incr('rooms')
         let oldRoomName = await redis.get(input.token)
-        if (oldRoomName !== null) await redis.del(oldRoomName)
+        if (oldRoomName !== null) {
+          await redis.del(oldRoomName)
+          await redis.decr('rooms')
+        }
         const roomName = uuid()
         socket.join(roomName)
         const roomData = await app.makeRoomData(input.level)
