@@ -135,21 +135,26 @@ const start = function (io) {
               client.to(input.roomName).emit('computer', result.computer)
             }
           } else {
-            let result = {
-              playerScore: roomData.playerScores.reduce((prev, element) => { return prev + element }, 0),
-              computerScore: roomData.computerScore
-            }
-            result.win = result.playerScore > result.computerScore
-            if (result.win) result.playerScore += roomData.maxScore
-            let user = await Model.User.findOne({ where: {token: input.token} })
-            const round = await Model.Round.create({ roomName: input.roomName, sponsor: roomData.problems[0].sponsor, score: result.playerScore, summary: true, anwearSecond: 0 })
-            await user.addRound(round)
-            await user.increment('score', {by: result.playerScore})
-            client.to(input.roomName).emit('finish', result)
-            await redis.decr('rooms')
-            socket.leave(input.roomName)
+            if (!roomData.finished) {
+              roomData.finished = true
+              await redis.set(input.roomName, JSON.stringify(roomData))
+              let result = {
+                playerScore: roomData.playerScores.reduce((prev, element) => { return prev + element }, 0),
+                computerScore: roomData.computerScore
+              }
+              result.win = result.playerScore > result.computerScore
+              if (result.win) result.playerScore += roomData.maxScore
+              let user = await Model.User.findOne({ where: {token: input.token} })
+              const round = await Model.Round.create({ roomName: input.roomName, sponsor: roomData.problems[0].sponsor, score: result.playerScore, summary: true, anwearSecond: 0 })
+              await user.addRound(round)
+              await user.increment('score', {by: result.playerScore})
+              client.to(input.roomName).emit('finish', result)
+              await redis.decr('rooms')
+              socket.leave(input.roomName)
 
-            await app.getScore(socket, input.token)
+              await app.getScore(socket, input.token)
+              await redis.del(input.roomName)
+            }
           }
         }
       }

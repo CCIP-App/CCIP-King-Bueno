@@ -49,7 +49,8 @@ const makeRoomData = async (levelName) => {
     playerScores: [],
     computerScore: 0,
     problems: [],
-    nowProblem: 0
+    nowProblem: 0,
+    finished: false
   }
   for (let element of problems) {
     let temp = {
