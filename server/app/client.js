@@ -72,13 +72,11 @@ const makeRoomData = async (levelName) => {
 }
 
 let makeComputer = async (problem) => {
-  const round = await Model.Round.findAll({ include: [{ model: Model.Problem, where: { question: problem.question } }], order: Model.client.random(), limit: 1 })
+  const round = await Model.Round.findAll({ where: { OptionId: { [Model.client.Op.ne]: null } }, include: [{ model: Model.Problem, where: { question: problem.question } }], order: Model.client.random(), limit: 1 })
   let result = {}
   if (round.length > 0) {
     let option = await round[0].getOption()
-    console.log(option)
-    console.log(option != null)
-    if (option != null && option !== undefined) {
+    if (option !== null && option !== undefined) {
       let optionNum = _.findIndex(problem.options, (value) => { return value.id === option.id })
       if (optionNum !== -1) result = { times: round[0].anwearSecond, option: optionNum, currect: option.currect, score: 0 }
       else result = { times: 3000, option: 0, currect: problem.options[0].currect, score: 0 }
