@@ -8,12 +8,13 @@ const router = new Router()
 
 router.get('/', async ctx => {
   const token = ctx.request.query.token
+  if (token === undefined) throw new Error('No token')
   let auth = await app.authLogin(token)
   if (auth) {
     ctx.response.body = 'Hello World'
   } else {
-    const auth = await app.authTokenAndRegist(token)
-    if (auth) {
+    const autha = await app.authTokenAndRegist(token)
+    if (autha) {
       ctx.response.body = 'Hello World'
     } else {
       throw new Error('No start')
