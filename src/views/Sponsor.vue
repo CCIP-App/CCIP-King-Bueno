@@ -1,5 +1,6 @@
 <template>
   <div id="Sponsor">
+    <p>本網頁會自動更新</p>
     <h2>已作答總題數：<span>{{ sum }}</span></h2>
     <h2>總體答對率：<span>{{ currectPercent }}%</span></h2>
     <v-card>
@@ -100,7 +101,7 @@ export default {
     this.loadSponsor()
     setInterval(() => {
       this.loadSponsor()
-    }, 10000)
+    }, 30000)
   }
 }
 </script>
@@ -110,5 +111,8 @@ h2 {
   font-size: 24px;
   margin-top: 15px;
   margin-bottom: 15px;
+}
+p {
+  font-size: 18px
 }
 </style>

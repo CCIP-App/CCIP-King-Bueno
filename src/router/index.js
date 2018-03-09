@@ -50,6 +50,6 @@ export default new Router({
     { path: '/finish', component: Finish, beforeEnter: requireSocketio },
     { path: '/convert/:name', component: Convert, beforeEnter: requireSocketio, props: true },
     { path: '/develop', component: Develop },
-    { path: '/sponsor/:name', component: Sponsor, props: true }
+    { path: '/sponsor/:name', component: Sponsor, props: true, meta: { sponsor: true } }
   ]
 })
