@@ -41,7 +41,8 @@ export default {
       playerCurrect: false,
       internal: null,
       score: 0,
-      comScore: 0
+      comScore: 0,
+      isAnimate: true
     }
   },
   computed: {
@@ -50,9 +51,6 @@ export default {
     },
     round () {
       return this.$store.state.round
-    },
-    isAnimate () {
-      return this.$store.state.animate
     }
   },
   methods: {
@@ -77,8 +75,10 @@ export default {
       }
     },
     animate (time) {
-      window.requestAnimationFrame(this.animate)
-      TWEEN.update(time)
+      if (this.isAnimate) {
+        window.requestAnimationFrame(this.animate)
+        TWEEN.update(time)
+      }
     }
   },
   beforeMount () {
@@ -122,8 +122,12 @@ export default {
       this.$router.replace('/finish')
     })
 
+    this.isAnimate = true
     requestAnimationFrame(this.animate)
     this.start()
+  },
+  beforeDestroy () {
+    this.isAnimate = false
   }
 }
 </script>
