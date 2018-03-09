@@ -11,7 +11,7 @@ import Loading from '../views/Loading.vue'
 import Problem from '../views/Problem.vue'
 import Finish from '../views/Finish.vue'
 import Convert from '../views/Convert.vue'
-// import Develop from '../views/Develop.vue'
+import Develop from '../views/Develop.vue'
 import Sponsor from '../views/Sponsor.vue'
 
 Vue.use(Router)
@@ -49,7 +49,7 @@ export default new Router({
     { path: '/problem', component: Problem, beforeEnter: requireSocketio },
     { path: '/finish', component: Finish, beforeEnter: requireSocketio },
     { path: '/convert/:name', component: Convert, beforeEnter: requireSocketio, props: true },
-    // { path: '/develop', component: Develop },
+    { path: '/develop', component: Develop },
     { path: '/sponsor/:name', component: Sponsor, props: true, meta: { sponsor: true } }
   ]
 })
