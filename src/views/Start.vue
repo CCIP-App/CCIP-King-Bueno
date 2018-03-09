@@ -12,9 +12,9 @@
         <td><v-btn block color="amber" style="height: 80px;font-size: 28px;" to="/rank">排行</v-btn></td>
       </tr>
     </table>
-    <div style="width: 80%; margin: 50px auto 0px auto;">
+    <!-- <div style="width: 80%; margin: 50px auto 0px auto;">
       <v-btn block color="light-blue" style="height: 80px;font-size: 28px;" to="/develop">開發模式</v-btn>
-    </div>
+    </div> -->
   </div>
 </template>
 
