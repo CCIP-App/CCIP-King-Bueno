@@ -57,7 +57,11 @@ const makeRoomData = async (levelName) => {
       sponsor: element.sponsor,
       options: await element.getOptions()
     }
-    temp.options = _.shuffle(temp.options)
+    let shuffle = true
+    for (let option of temp.options) {
+      if (option.content.includes('以上')) shuffle = false
+    }
+    if (shuffle) temp.options = _.shuffle(temp.options)
     temp.options = temp.options.map(element => {
       return element.dataValues
     })
