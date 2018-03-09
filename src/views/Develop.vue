@@ -176,6 +176,10 @@ export default {
   position: relative;
 }
 
+.btn__content:before {
+  background-color: transparent !important;
+}
+
 .btn__content {
   white-space:initial !important;
   text-transform: none;
