@@ -42,6 +42,9 @@ export default {
           this.$store.commit('setOffline', true)
           this.$router.replace('/offline')
         })
+      } else {
+        this.$store.commit('setOffline', true)
+        this.$router.replace('/offline')
       }
     } catch (error) {
       window.alert('請離開 iOS 隱私模式 或 Add to homescreen')
