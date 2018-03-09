@@ -14,7 +14,7 @@ export default {
     }
   },
   beforeMount () {
-    window.socketio.on('start', (msg) => {
+    window.socketio.once('start', (msg) => {
       console.log(msg)
       this.$store.commit('setRoom', msg)
       this.$router.replace('/problem')

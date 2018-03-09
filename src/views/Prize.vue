@@ -31,7 +31,7 @@ export default {
     }
   },
   beforeMount () {
-    window.socketio.on('prize', (msg) => {
+    window.socketio.once('prize', (msg) => {
       console.log('prize', msg)
       this.prizes = msg
     })

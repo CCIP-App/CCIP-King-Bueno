@@ -33,7 +33,7 @@ export default {
     start () {
       var self = this
       if (self.player.token !== '') {
-        window.socketio.on('login', (msg) => {
+        window.socketio.once('login', (msg) => {
           if (msg === 'success') {
             window.socketio.emit('score', self.player.token)
             window.socketio.emit('nick', self.player.token)

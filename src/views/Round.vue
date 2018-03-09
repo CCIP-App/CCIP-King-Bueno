@@ -21,7 +21,7 @@ export default {
     }
   },
   beforeMount () {
-    window.socketio.on('chooseLevel', (msg) => {
+    window.socketio.once('chooseLevel', (msg) => {
       console.log('chooseLevel', msg)
       this.rounds = msg
     })

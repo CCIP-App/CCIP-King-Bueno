@@ -26,7 +26,7 @@ export default {
     }
   },
   beforeMount () {
-    window.socketio.on('rank', (msg) => {
+    window.socketio.once('rank', (msg) => {
       console.log('rank', msg)
       this.rank = msg
     })

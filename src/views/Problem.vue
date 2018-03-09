@@ -128,6 +128,10 @@ export default {
   },
   beforeDestroy () {
     this.isAnimate = false
+    window.socketio.off('getProblem')
+    window.socketio.off('computer')
+    window.socketio.off('answear')
+    window.socketio.off('finish')
   }
 }
 </script>
