@@ -19,9 +19,9 @@ const authTokenAndRegist = async (token) => {
     } else {
       const data = JSON.parse(response.body)
       await Model.User.create({ nick: data['user_id'], token: token, score: 0, type: data['type'] })
-      if (data['type'] !== 'staff') {
-        return false
-      }
+      // if (data['type'] !== 'staff') {
+      //   return false
+      // }
       return true
     }
   } catch (error) {
@@ -32,7 +32,7 @@ const authTokenAndRegist = async (token) => {
 
 const authLogin = async (token) => {
   let user = await Model.User.findOne({ where: {token: token} })
-  if (user !== null && user.type !== 'staff') {
+  if (user !== null) {
     return false
   }
   return (user !== null)
