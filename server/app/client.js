@@ -25,7 +25,7 @@ const authTokenAndRegist = async (token) => {
       return true
     }
   } catch (error) {
-    console.err(error)
+    console.log(error)
     return false
   }
 }
