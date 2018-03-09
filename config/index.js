@@ -5,8 +5,8 @@
 const path = require('path')
 
 module.exports = {
-  server: 'http://localhost:8088/',
-  socket: 'http://localhost:8088/client',
+  server: 'https://king-api.sitcon.party/',
+  socket: 'https://king-api.sitcon.party/client',
   dev: {
 
     // Paths
