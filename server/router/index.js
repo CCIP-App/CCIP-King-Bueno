@@ -85,7 +85,7 @@ router.post('/convert', async ctx => {
     vali = false
   }
 
-  console.log(vali)
+  // console.log(vali)
 
   if (vali) {
     let userPrize = await Model.UserPrize.create({})
