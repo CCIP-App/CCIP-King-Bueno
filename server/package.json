@@ -32,7 +32,7 @@
     "pg-hstore": "^2.3.2",
     "request": "^2.83.0",
     "request-promise": "^4.2.2",
-    "sequelize": "^4.33.4",
+    "sequelize": "^5.15.1",
     "socket.io": "^2.0.4",
     "sqlite3": "^3.1.13",
     "uuid": "^3.2.1",
